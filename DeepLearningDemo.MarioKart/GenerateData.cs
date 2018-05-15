@@ -23,10 +23,11 @@ namespace DeepLearningDemo.MarioKart
         {
             return InterceptKeys
                 .CaptureKeys()
-                .Buffer(TimeSpan.FromMilliseconds(100))
+                .Buffer(TimeSpan.FromMilliseconds(200))
                 .Where(keys => keys.Count > 0)
-                .Select(key => (bitmap: Capture(rec), keys: key.GroupBy(x => x.Item1).Where(x => x.Select(xx => xx.Item2 ? 1 : -1).Sum() > 0).Select(x => x.Key)))
-                .Do(b => CreateTrainingData(b.bitmap, b.keys));
+                .Scan(Enumerable.Empty<(VirtualKeyCode, bool)>(), (acc, keys) => acc.Concat(keys).GroupBy(x => x.Item1).Where(x => x.Select(xx => xx.Item2 ? 1 : -1).Sum() > 0).Select(x => (x.Key, true)))
+                .Select(keys => (bitmap: Capture(rec), keys: keys.Where(x => x.Item2).Select(x => x.Item1)))
+                .Do(x => CreateTrainingData(x.bitmap, x.keys));
         }
 
         private static void CreateTrainingData(Bitmap img, IEnumerable<VirtualKeyCode> key)

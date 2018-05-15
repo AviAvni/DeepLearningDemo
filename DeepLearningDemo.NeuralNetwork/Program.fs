@@ -4,6 +4,8 @@ open CNTK.FSharp.Sequential
  
 open System.IO
 open System
+open System.Windows.Forms
+open System.Threading
 
 // take a look at the data
 
@@ -34,16 +36,10 @@ let pool : Conv2D.Pool2D =
 
 let network : Computation =
     Layer.scale (float32 (1./255.))
-    |> Layer.add (Conv2D.convolution 
-        { conv with 
-            Filters = 4 
-        })
+    |> Layer.add (Conv2D.convolution { conv with Filters = 4 })
     |> Layer.add Activation.ReLU
     |> Layer.add (Conv2D.pooling pool)
-    |> Layer.add (Conv2D.convolution
-        { conv with 
-            Filters = 8
-        })
+    |> Layer.add (Conv2D.convolution { conv with Filters = 8 })
     |> Layer.add Activation.ReLU
     |> Layer.add (Conv2D.pooling pool)
     |> Layer.add (Layer.dense numClasses)
@@ -107,17 +103,21 @@ let res = Utilities.evaluate modelFile testingSource DeviceDescriptor.CPUDevice
 printfn "%A" res
 
 // visualize the predictions
- 
-Utilities.predict(
-    modelFile,
-    testingSource,
-    DeviceDescriptor.CPUDevice
-    )
-|> Seq.map (fun (pixels,expected,predicted) -> 
-    pixels,
-    sprintf "Real:%i, Pred:%i" expected predicted) 
-|> Seq.toArray
-|> Seq.iter (fun (pixels,label) ->
-    Visualizer.draw (0,pixels) label)
+let t = Thread(fun () ->
+    Utilities.predict(
+        modelFile,
+        testingSource,
+        DeviceDescriptor.CPUDevice
+        )
+    |> Seq.map (fun (pixels,expected,predicted) -> 
+        pixels,
+        sprintf "Real:%i, Pred:%i" expected predicted) 
+    |> Seq.toArray
+    |> Seq.iter (fun (pixels,label) ->
+        Visualizer.draw (0,pixels) label)
+        
+    Application.Run())
+
+t.Start()
 
 Console.ReadLine()
