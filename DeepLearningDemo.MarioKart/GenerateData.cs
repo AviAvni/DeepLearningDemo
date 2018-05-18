@@ -17,7 +17,7 @@ namespace DeepLearningDemo.MarioKart
 
         public static int ResizeWidth = 100;
         public static int ResizeHeight = 74;
-        public static Rectangle rec = new Rectangle() { X = 150, Y = 180, Width = 490, Height = 365 };
+        public static Rectangle rec = new Rectangle() { X = 100, Y = 100, Width = 1300, Height = 1300 };
 
         public static IObservable<(Bitmap, IEnumerable<VirtualKeyCode>)> CaptureGameData()
         {
@@ -38,7 +38,7 @@ namespace DeepLearningDemo.MarioKart
 
             var strPath = string.Format(trainingFilePath, FileCounter);
 
-            File.AppendAllText(strPath, strBuilder.ToString());
+            File.AppendAllLines(strPath, new[] { strBuilder.ToString() });
         }
 
         public static StringBuilder ProcessImageForTraining(Bitmap bitmap, string outputLabel)
