@@ -24,7 +24,7 @@
         <Button Content="Collect Data" Click="Button_Click" Margin="2" Padding="2"/>
         <ProgressBar Grid.Column="1" Margin="2" Padding="2"/>
 
-        <Button Content="Train" Grid.Row="1" Margin="2" Padding="2"/>
+        <Button Content="Train" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_2"/>
         <ProgressBar Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
 
         <Button Content="Test" Grid.Row="2" Margin="2" Padding="2"/>

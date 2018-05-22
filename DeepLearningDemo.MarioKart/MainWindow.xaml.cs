@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using static CNTK.FSharp.Core.Minibatch;
 
 namespace DeepLearningDemo.MarioKart
 {
@@ -62,9 +63,19 @@ namespace DeepLearningDemo.MarioKart
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            PlayGame.RandomPlay();
+            await PlayGame.RandomPlay();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            NeuralNetwork.train(ReportProgress);
+        }
+
+        private void ReportProgress(TrainingSummary obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

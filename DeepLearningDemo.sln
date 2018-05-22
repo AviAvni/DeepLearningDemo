@@ -5,9 +5,13 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLearningDemo.CognitiveServices", "DeepLearningDemo.CognitiveServices\DeepLearningDemo.CognitiveServices.csproj", "{E1AD910A-CA2E-4238-89B0-4635020FC73F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DeepLearningDemo.NeuralNetwork", "DeepLearningDemo.NeuralNetwork\DeepLearningDemo.NeuralNetwork.fsproj", "{904A0DC1-5F85-4764-83E6-02A89B8176C4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLearningDemo.MarioKart", "DeepLearningDemo.MarioKart\DeepLearningDemo.MarioKart.csproj", "{1667B4F4-6334-46BC-8848-C4937F072CC1}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DeepLearningDemo.MarioKart.NeuralNetwork", "DeepLearningDemo.MarioKart.NeuralNetwork\DeepLearningDemo.MarioKart.NeuralNetwork.fsproj", "{E79834A0-1C52-4223-B222-721E2E635618}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLearningDemo.DigitRecognizer", "DeepLearningDemo.DigitRecognizer\DeepLearningDemo.DigitRecognizer.csproj", "{E2FCAD46-5FE5-4E5A-9756-7C0CEC4450C7}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DeepLearningDemo.DigitRecognier.NeuralNetwork", "DeepLearningDemo.DigitRecognier.NeuralNetwork\DeepLearningDemo.DigitRecognier.NeuralNetwork.fsproj", "{3FFE7788-5C72-4EE1-BD15-D7538F38CF98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +23,22 @@ Global
 		{E1AD910A-CA2E-4238-89B0-4635020FC73F}.Debug|x64.Build.0 = Debug|x64
 		{E1AD910A-CA2E-4238-89B0-4635020FC73F}.Release|x64.ActiveCfg = Release|x64
 		{E1AD910A-CA2E-4238-89B0-4635020FC73F}.Release|x64.Build.0 = Release|x64
-		{904A0DC1-5F85-4764-83E6-02A89B8176C4}.Debug|x64.ActiveCfg = Debug|x64
-		{904A0DC1-5F85-4764-83E6-02A89B8176C4}.Debug|x64.Build.0 = Debug|x64
-		{904A0DC1-5F85-4764-83E6-02A89B8176C4}.Release|x64.ActiveCfg = Release|x64
-		{904A0DC1-5F85-4764-83E6-02A89B8176C4}.Release|x64.Build.0 = Release|x64
 		{1667B4F4-6334-46BC-8848-C4937F072CC1}.Debug|x64.ActiveCfg = Debug|x64
 		{1667B4F4-6334-46BC-8848-C4937F072CC1}.Debug|x64.Build.0 = Debug|x64
 		{1667B4F4-6334-46BC-8848-C4937F072CC1}.Release|x64.ActiveCfg = Release|Any CPU
 		{1667B4F4-6334-46BC-8848-C4937F072CC1}.Release|x64.Build.0 = Release|Any CPU
+		{E79834A0-1C52-4223-B222-721E2E635618}.Debug|x64.ActiveCfg = Debug|x64
+		{E79834A0-1C52-4223-B222-721E2E635618}.Debug|x64.Build.0 = Debug|x64
+		{E79834A0-1C52-4223-B222-721E2E635618}.Release|x64.ActiveCfg = Release|x64
+		{E79834A0-1C52-4223-B222-721E2E635618}.Release|x64.Build.0 = Release|x64
+		{E2FCAD46-5FE5-4E5A-9756-7C0CEC4450C7}.Debug|x64.ActiveCfg = Debug|x64
+		{E2FCAD46-5FE5-4E5A-9756-7C0CEC4450C7}.Debug|x64.Build.0 = Debug|x64
+		{E2FCAD46-5FE5-4E5A-9756-7C0CEC4450C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{E2FCAD46-5FE5-4E5A-9756-7C0CEC4450C7}.Release|x64.Build.0 = Release|Any CPU
+		{3FFE7788-5C72-4EE1-BD15-D7538F38CF98}.Debug|x64.ActiveCfg = Debug|x64
+		{3FFE7788-5C72-4EE1-BD15-D7538F38CF98}.Debug|x64.Build.0 = Debug|x64
+		{3FFE7788-5C72-4EE1-BD15-D7538F38CF98}.Release|x64.ActiveCfg = Release|Any CPU
+		{3FFE7788-5C72-4EE1-BD15-D7538F38CF98}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
