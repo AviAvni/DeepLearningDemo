@@ -39,8 +39,6 @@ let evaluate
 
         let rec countErrors (total,errors) =
 
-            printfn "Total: %i; Errors: %i" total errors
-
             let minibatchData = testMinibatchSource.GetNextMinibatch((uint32)batchSize, device)
 
             if (minibatchData = null || minibatchData.Count = 0)

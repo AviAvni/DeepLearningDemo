@@ -1,6 +1,8 @@
 ﻿using Microsoft.FSharp.Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,19 +34,52 @@ namespace DeepLearningDemo.DigitRecognizer
 
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            NeuralNetwork.train(ReportProgress);
+            await Task.Run(() => NeuralNetwork.train(ReportProgress));
         }
 
-        private void ReportProgress(TrainingSummary trainingSummary)
+        private async void ReportProgress(TrainingSummary trainingSummary)
         {
-
+            await Dispatcher.InvokeAsync(() =>
+            {
+                trainingStats.Text = trainingSummary.ToString();
+            });
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            NeuralNetwork.visualize();
+            testsResult.Text = NeuralNetwork.test();
+        }
+
+        private static BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            try
+            {
+                using (var memory = new MemoryStream())
+                {
+                    bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                    memory.Position = 0;
+                    var bitmapimage = new BitmapImage();
+                    bitmapimage.BeginInit();
+                    bitmapimage.StreamSource = memory;
+                    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapimage.EndInit();
+
+                    return bitmapimage;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            tests.ItemsSource =
+                NeuralNetwork.visualize()
+                .Select(BitmapToImageSource);
         }
     }
 }

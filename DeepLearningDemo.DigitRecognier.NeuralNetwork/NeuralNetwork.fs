@@ -104,14 +104,15 @@ let testingSource = {
     }
 
 let test () =
-    let res = Utilities.evaluate modelFile testingSource DeviceDescriptor.CPUDevice
-    printfn "%A" res
+    let (total, errors) = Utilities.evaluate modelFile testingSource DeviceDescriptor.CPUDevice
+    sprintf "Total: %d, Errors: %d" total errors
 
 let visualize () =
     Utilities.predict modelFile testingSource DeviceDescriptor.CPUDevice
     |> Seq.map (fun (pixels,expected,predicted) -> 
         pixels,
-        sprintf "Real:%i, Pred:%i" expected predicted) 
+        sprintf "Real:%i, Pred:%i" expected predicted,
+        expected = predicted)
     |> Seq.toArray
-    |> Seq.map (fun (pixels,label) ->
-        Visualizer.draw (0,pixels) label)
+    |> Seq.map (fun (pixels,label, ok) ->
+        Visualizer.draw pixels label ok)
