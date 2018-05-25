@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using static CNTK.FSharp.Core.Minibatch;
@@ -30,7 +31,8 @@ namespace DeepLearningDemo.MarioKart
                     .Subscribe(b =>
                     {
                         img.Source = BitmapToImageSource(b.Item1);
-                        keys.ItemsSource = b.Item2;
+                        grayImg.Source = BitmapToImageSource(b.Item2);
+                        keys.ItemsSource = b.Item3;
                     });
             }
             else
@@ -68,14 +70,17 @@ namespace DeepLearningDemo.MarioKart
             await PlayGame.RandomPlay();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            NeuralNetwork.train(ReportProgress);
+            await Task.Run(() => NeuralNetwork.train(ReportProgress));
         }
 
-        private void ReportProgress(TrainingSummary obj)
+        private async void ReportProgress(TrainingSummary trainingSummary)
         {
-            throw new NotImplementedException();
+            await Dispatcher.InvokeAsync(() =>
+            {
+                triningStats.Text = trainingSummary.ToString();
+            });
         }
     }
 }

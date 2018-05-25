@@ -39,7 +39,7 @@ namespace DeepLearningDemo.CognitiveServices
                 using (var fs = new FileStream(ofd.FileName, FileMode.Open))
                 using (var api = new ComputerVisionAPI(new Microsoft.Azure.CognitiveServices.Vision.ComputerVision.ApiKeyServiceClientCredentials(computerVisionApiKey)))
                 {
-                    api.AzureRegion = AzureRegions.Westcentralus;
+                    api.AzureRegion = AzureRegions.Westeurope;
                     result.DataContext = await api.AnalyzeImageInStreamAsync(fs, new List<VisualFeatureTypes> { VisualFeatureTypes.Adult, VisualFeatureTypes.Categories, VisualFeatureTypes.Color, VisualFeatureTypes.Description, VisualFeatureTypes.Faces, VisualFeatureTypes.ImageType, VisualFeatureTypes.Tags });
                 }
                 imgVision.Source = new BitmapImage(new Uri(ofd.FileName));

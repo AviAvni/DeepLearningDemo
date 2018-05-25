@@ -17,17 +17,24 @@ namespace DeepLearningDemo.MarioKart
 
         public static int ResizeWidth = 100;
         public static int ResizeHeight = 74;
-        public static Rectangle rec = new Rectangle() { X = 100, Y = 100, Width = 1300, Height = 1300 };
+        public static Rectangle rec = new Rectangle() { X = 10, Y = 100, Width = 800, Height = 600 };
 
-        public static IObservable<(Bitmap, IEnumerable<VirtualKeyCode>)> CaptureGameData()
+        public static IObservable<(Bitmap, Bitmap, IEnumerable<VirtualKeyCode>)> CaptureGameData()
         {
             return InterceptKeys
                 .CaptureKeys()
                 .Buffer(TimeSpan.FromMilliseconds(200))
                 .Where(keys => keys.Count > 0)
-                .Scan(Enumerable.Empty<(VirtualKeyCode, bool)>(), (acc, keys) => acc.Concat(keys).GroupBy(x => x.Item1).Where(x => x.Select(xx => xx.Item2 ? 1 : -1).Sum() > 0).Select(x => (x.Key, true)))
-                .Select(keys => (bitmap: Capture(rec), keys: keys.Where(x => x.Item2).Select(x => x.Item1)))
-                .Do(x => CreateTrainingData(x.bitmap, x.keys));
+                .Scan(Enumerable.Empty<(VirtualKeyCode, bool)>(), (acc, keys) => acc.Concat(keys).GroupBy(x => x.Item1).Where(x => x.Select(xx => xx.Item2 ? 1 : -1).Sum() > 0).Select(x => ((Key: x.Key, true))))
+                .Select(keys => MergeKeys(keys))
+                .Do(x => CreateTrainingData(x.grayBitmap, x.keys));
+        }
+
+        private static (Bitmap bitmap, Bitmap grayBitmap, IEnumerable<VirtualKeyCode> keys) MergeKeys(IEnumerable<(VirtualKeyCode, bool)> keys)
+        {
+            var bitmap = Capture(rec);
+            var mergedKeys = keys.Where(x => x.Item2).Select(x => x.Item1);
+            return (bitmap, ResizeAndGray(bitmap), mergedKeys);
         }
 
         private static void CreateTrainingData(Bitmap img, IEnumerable<VirtualKeyCode> key)
@@ -43,7 +50,7 @@ namespace DeepLearningDemo.MarioKart
 
         public static StringBuilder ProcessImageForTraining(Bitmap bitmap, string outputLabel)
         {
-            var retValue = ResizeAndCHWExctraction(bitmap);
+            var retValue = ImageUtil.ParallelExtractCHW(bitmap, true);
 
             var sb = new StringBuilder();
 
@@ -61,13 +68,6 @@ namespace DeepLearningDemo.MarioKart
                 sb.Append(strVal);
             }
             return sb;
-        }
-
-        public static List<float> ResizeAndCHWExctraction(Bitmap bitmap)
-        {
-            var imageToProcess = ResizeAndGray(bitmap);
-
-            return ImageUtil.ParallelExtractCHW(imageToProcess, true);
         }
 
         public static Bitmap ResizeAndGray(Bitmap bitmap)
@@ -101,13 +101,13 @@ namespace DeepLearningDemo.MarioKart
         public static string InputKeyToHotVector(IEnumerable<VirtualKeyCode> key)
         {
             var output = new string[9];
-            if (key.Contains(VirtualKeyCode.VK_W) && key.Contains(VirtualKeyCode.VK_A))
+            if (key.Contains(VirtualKeyCode.VK_X) && key.Contains(VirtualKeyCode.LEFT))
                 return "0 0 1 0 0 ";
-            else if (key.Contains(VirtualKeyCode.VK_W) && key.Contains(VirtualKeyCode.VK_F))
+            else if (key.Contains(VirtualKeyCode.VK_X) && key.Contains(VirtualKeyCode.RIGHT))
                 return "0 0 0 1 0 ";
-            else if (key.Contains(VirtualKeyCode.VK_W))
+            else if (key.Contains(VirtualKeyCode.VK_X))
                 return "1 0 0 0 0 ";
-            else if (key.Contains(VirtualKeyCode.VK_S))
+            else if (key.Contains(VirtualKeyCode.VK_C))
                 return "0 1 0 0 0 ";
             else
                 return "0 0 0 0 1 ";

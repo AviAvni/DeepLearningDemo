@@ -26,6 +26,7 @@
 
         <Button Content="Train" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_2"/>
         <ProgressBar Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
+        <TextBlock x:Name="triningStats" Grid.Column="2" Margin="2" Padding="2"/>
 
         <Button Content="Test" Grid.Row="2" Margin="2" Padding="2"/>
         <ProgressBar Grid.Row="2" Grid.Column="1" Margin="2" Padding="2"/>
@@ -34,7 +35,10 @@
 
         <Button Content="Random Play" Grid.Row="4" Margin="2" Padding="2" Click="Button_Click_1"/>
 
-        <Image x:Name="img" Grid.Row="5" Grid.Column="3" />
+        <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Horizontal">
+            <Image x:Name="img"/>
+            <Image x:Name="grayImg"/>
+        </StackPanel>
 
         <ListBox x:Name="keys" Grid.Row="5"/>
     </Grid>

@@ -95,7 +95,9 @@ namespace DeepLearningDemo.MarioKart
             {
                 var b = GenerateData.Capture(GenerateData.rec);
 
-                var retValue = GenerateData.ResizeAndCHWExctraction(b).ToArray();
+                b = GenerateData.ResizeAndGray(b);
+
+                var retValue = ImageUtil.ParallelExtractCHW(b, true).ToArray();
 
                 Play(retValue, device);
             }
