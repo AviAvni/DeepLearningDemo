@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNTK;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Reactive.Linq;
@@ -81,6 +82,12 @@ namespace DeepLearningDemo.MarioKart
             {
                 triningStats.Text = trainingSummary.ToString();
             });
+        }
+
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            PlayGame.LoadModel("LSTM.model", DeviceDescriptor.CPUDevice);
+            await PlayGame.DeepLearningPlay(DeviceDescriptor.CPUDevice);
         }
     }
 }

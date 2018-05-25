@@ -58,5 +58,4 @@ let train (f:Action<Minibatch.TrainingSummary>) =
 
     let predictor = trainer.learn minibatchSource (featureStreamName,labelsStreamName) config spec
 
-    let modelFile = Path.Combine(__SOURCE_DIRECTORY__,"LSTM.model")
-    predictor.Save(modelFile)
+    predictor.Save("LSTM.model")

@@ -15,12 +15,12 @@ namespace DeepLearningDemo.MarioKart
 
         public static string cntkModel = "training/LSTM.model";
 
-        static Function m_model = null;
+        static Function model = null;
         static InputSimulator m_InputSimulator = new InputSimulator();
 
         public static void LoadModel(string modelFileName, DeviceDescriptor device)
         {
-            m_model = Function.Load(modelFileName, device);
+            model = Function.Load(modelFileName, device);
         }
 
 
@@ -89,10 +89,12 @@ namespace DeepLearningDemo.MarioKart
             ReleaseKey(VirtualKeyCode.VK_C);
         }
 
-        public static void DeepLearningPlay(DeviceDescriptor device)
+        public static async Task DeepLearningPlay(DeviceDescriptor device)
         {
             while (true)
             {
+                await Task.Delay(100);
+
                 var b = GenerateData.Capture(GenerateData.rec);
 
                 b = GenerateData.ResizeAndGray(b);
@@ -129,8 +131,8 @@ namespace DeepLearningDemo.MarioKart
 
         private static void Play(float[] xVal, DeviceDescriptor device)
         {
-            var feature = m_model.Arguments[0];
-            var label = m_model.Outputs.Last();
+            var feature = model.Arguments[0];
+            var label = model.Outputs.Last();
 
             var xValues = Value.CreateBatch(feature.Shape, xVal, device);
 
@@ -143,7 +145,7 @@ namespace DeepLearningDemo.MarioKart
                 [label] = null
             };
 
-            m_model.Evaluate(inputDataMap, outputDataMap, device);
+            model.Evaluate(inputDataMap, outputDataMap, device);
 
             var outputData = outputDataMap[label].GetDenseData<float>(label);
 
