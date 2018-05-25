@@ -31,10 +31,10 @@ let imageStreamInfo = minibatchSource.StreamInfo(featureStreamName)
 let labelStreamInfo = minibatchSource.StreamInfo(labelsStreamName)
 
 let input = CNTKLib.InputVariable(shape [imageDims], DataType.Float)
-let labels = CNTKLib.InputVariable(shape [numClasses], DataType.Float)
+let labels = CNTKLib.InputVariable(shape [numClasses], DataType.Float, false, labelsStreamName, new AxisVector([| CNTK.Axis.DefaultBatchAxis() |]))
 
 let network : Computation = 
-    Recurrent.LSTMSequenceClassifierNet 7400 numClasses 2000 2000
+    Recurrent.LSTMSequenceClassifierNet numClasses 7400 2000 2000
 
 let spec = {
     Features = input
