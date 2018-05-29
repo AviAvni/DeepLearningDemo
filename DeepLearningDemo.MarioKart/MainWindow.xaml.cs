@@ -79,7 +79,7 @@ namespace DeepLearningDemo.MarioKart
             await Task.Run(() => NeuralNetwork.train(ReportProgress));
         }
 
-        private async void ReportProgress(TrainingSummary trainingSummary)
+        private void ReportProgress(TrainingSummary trainingSummary)
         {
             values.Add(trainingSummary.Evaluation);
             if(values.Count > 40)
