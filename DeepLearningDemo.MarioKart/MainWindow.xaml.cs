@@ -1,4 +1,5 @@
 ﻿using CNTK;
+using LiveCharts;
 using System;
 using System.Drawing;
 using System.IO;
@@ -17,10 +18,12 @@ namespace DeepLearningDemo.MarioKart
     public partial class MainWindow : Window
     {
         private IDisposable subsctiption;
+        private ChartValues<double> values = new ChartValues<double>();
 
         public MainWindow()
         {
             InitializeComponent();
+            triningStats.Values = values;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -78,10 +81,11 @@ namespace DeepLearningDemo.MarioKart
 
         private async void ReportProgress(TrainingSummary trainingSummary)
         {
-            await Dispatcher.InvokeAsync(() =>
+            values.Add(trainingSummary.Evaluation);
+            if(values.Count > 40)
             {
-                triningStats.Text = trainingSummary.ToString();
-            });
+                values.RemoveAt(0);
+            }
         }
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)

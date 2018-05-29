@@ -1,4 +1,5 @@
-﻿using Microsoft.FSharp.Core;
+﻿using LiveCharts;
+using Microsoft.FSharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,9 +25,12 @@ namespace DeepLearningDemo.DigitRecognizer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ChartValues<double> values = new ChartValues<double>();
+
         public MainWindow()
         {
             InitializeComponent();
+            triningStats.Values = values;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -41,10 +45,11 @@ namespace DeepLearningDemo.DigitRecognizer
 
         private async void ReportProgress(TrainingSummary trainingSummary)
         {
-            await Dispatcher.InvokeAsync(() =>
+            values.Add(trainingSummary.Evaluation);
+            if (values.Count > 40)
             {
-                trainingStats.Text = trainingSummary.ToString();
-            });
+                values.RemoveAt(0);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

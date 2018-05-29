@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:DeepLearningDemo.MarioKart"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -26,7 +27,33 @@
 
         <Button Content="Train" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_2"/>
         <ProgressBar Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
-        <TextBlock x:Name="triningStats" Grid.Column="2" Margin="2" Padding="2"/>
+        <lvc:CartesianChart Grid.Row="1" Grid.Column="2" Margin="2" Height="200">
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries x:Name="triningStats" PointGeometrySize="0" LineSmoothness="0" AreaLimit="0"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis IsMerged="True">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator StrokeThickness="1" StrokeDashArray="2">
+                            <lvc:Separator.Stroke>
+                                <SolidColorBrush Color="#404F56" />
+                            </lvc:Separator.Stroke>
+                        </lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis IsMerged="True">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator StrokeThickness="1.5" StrokeDashArray="4">
+                            <lvc:Separator.Stroke>
+                                <SolidColorBrush Color="#404F56" />
+                            </lvc:Separator.Stroke>
+                        </lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
 
         <Button Content="Test" Grid.Row="2" Margin="2" Padding="2"/>
         <ProgressBar Grid.Row="2" Grid.Column="1" Margin="2" Padding="2"/>

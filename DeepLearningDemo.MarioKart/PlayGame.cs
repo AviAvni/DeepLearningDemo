@@ -95,6 +95,9 @@ namespace DeepLearningDemo.MarioKart
             {
                 await Task.Delay(100);
 
+                if (!ActivateN64Emulator())
+                    continue;
+
                 var b = GenerateData.Capture(GenerateData.rec);
 
                 b = GenerateData.ResizeAndGray(b);
@@ -160,9 +163,6 @@ namespace DeepLearningDemo.MarioKart
                 return;
 
             var outValue = outputData.Select((IList<float> l) => l.IndexOf(l.Max())).FirstOrDefault();
-
-            if (!ActivateN64Emulator())
-                return;
 
             if (outValue == 0)
                 MoveForward();

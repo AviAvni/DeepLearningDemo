@@ -80,7 +80,7 @@ let source : TextFormatSource = {
     Labels = labelsStreamName
     }
 
-let minibatchSource = TextFormat.source (source.Mappings spec)
+let minibatchSource : MinibatchSource = TextFormat.source (source.Mappings spec)
 
 let modelFile = Path.Combine(__SOURCE_DIRECTORY__,"MNISTConvolution.model")
 
