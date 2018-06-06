@@ -108,30 +108,6 @@ namespace DeepLearningDemo.MarioKart
             }
         }
 
-        public static async Task RandomPlay()
-        {
-            while (true)
-            {
-                await Task.Delay(100);
-
-                if (!ActivateN64Emulator())
-                    continue;
-
-                var outValue = rnd.Next(0, 4);
-
-                if (outValue == 0)
-                    MoveForward();
-                else if (outValue == 1)
-                    Break();
-                else if (outValue == 2)
-                    MoveForwardLeft();
-                else if (outValue == 3)
-                    MoveForwardRight();
-                else
-                    None();
-            }
-        }
-
         private static void Play(float[] xVal, DeviceDescriptor device)
         {
             var feature = model.Arguments[0];

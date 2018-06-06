@@ -9,25 +9,24 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="100"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
         <Button Content="Collect Data" Click="Button_Click" Margin="2" Padding="2"/>
-        <ProgressBar Grid.Column="1" Margin="2" Padding="2"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <Image x:Name="img"/>
+            <Image x:Name="grayImg"/>
+            <ListBox x:Name="keys" Grid.Row="5"/>
+        </StackPanel>
 
         <Button Content="Train" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_2"/>
-        <ProgressBar Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
-        <lvc:CartesianChart Grid.Row="1" Grid.Column="2" Margin="2" Height="200">
+        <lvc:CartesianChart Grid.Row="1" Grid.Column="1" Margin="2">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries x:Name="triningStats" PointGeometrySize="0" LineSmoothness="0" AreaLimit="0"/>
             </lvc:CartesianChart.Series>
@@ -55,18 +54,6 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
-        <Button Content="Test" Grid.Row="2" Margin="2" Padding="2"/>
-        <ProgressBar Grid.Row="2" Grid.Column="1" Margin="2" Padding="2"/>
-
-        <Button Content="Deploy" Grid.Row="3" Margin="2" Padding="2" Click="Button_Click_3"/>
-
-        <Button Content="Random Play" Grid.Row="4" Margin="2" Padding="2" Click="Button_Click_1"/>
-
-        <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Horizontal">
-            <Image x:Name="img"/>
-            <Image x:Name="grayImg"/>
-        </StackPanel>
-
-        <ListBox x:Name="keys" Grid.Row="5"/>
+        <Button Content="Deploy" Grid.Row="2" Margin="2" Padding="2" Click="Button_Click_3"/>
     </Grid>
 </Window>

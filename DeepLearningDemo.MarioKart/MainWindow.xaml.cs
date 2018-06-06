@@ -69,11 +69,6 @@ namespace DeepLearningDemo.MarioKart
             }
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            await PlayGame.RandomPlay();
-        }
-
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
             await Task.Run(() => NeuralNetwork.train(ReportProgress));
