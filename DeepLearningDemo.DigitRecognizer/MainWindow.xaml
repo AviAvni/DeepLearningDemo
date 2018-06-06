@@ -9,24 +9,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="100"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Content="Get Data" Click="Button_Click" Margin="2" Padding="2"/>
-        <ProgressBar Grid.Column="1" Margin="2" Padding="2"/>
-
-        <Button Content="Train" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_2"/>
-        <ProgressBar Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
-        <lvc:CartesianChart Grid.Row="1" Grid.Column="2" Margin="2" Height="200">
+        <Button Content="Train" Margin="2" Padding="2" Click="Button_Click_2"/>
+        <lvc:CartesianChart Grid.Column="1" Margin="2">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries x:Name="triningStats" PointGeometrySize="0" LineSmoothness="0" AreaLimit="0"/>
             </lvc:CartesianChart.Series>
@@ -55,20 +49,25 @@
         </lvc:CartesianChart>
 
 
-        <Button Content="Test" Grid.Row="2" Margin="2" Padding="2" Click="Button_Click_1"/>
-        <ProgressBar Grid.Row="2" Grid.Column="1" Margin="2" Padding="2"/>
-        <TextBlock x:Name="testsResult" Grid.Row="2" Grid.Column="3" Margin="2" Padding="2"/>
+        <Button Content="Test" Grid.Row="1" Margin="2" Padding="2" Click="Button_Click_1"/>
+        <TextBlock x:Name="testsResult" Grid.Row="1" Grid.Column="1" Margin="2" Padding="2"/>
 
-        <Button Content="Deploy" Grid.Row="3" Margin="2" Padding="2" Click="Button_Click_3"/>
-
-        <Image x:Name="img" Grid.Row="5" Grid.Column="3" />
-
-        <ListBox x:Name="tests" Grid.Row="5">
+        <Button Content="Deploy" Grid.Row="2" Margin="2" Padding="2" Click="Button_Click_3"/>
+        <ListBox x:Name="tests" Grid.Row="2" Grid.Column="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Image Source="{Binding}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Image x:Name="img1" Grid.Row="3"/>
+        <Grid Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <InkCanvas x:Name="img" StrokeCollected="img_StrokeCollected" Width="200" Height="200" Background="Black">
+                <InkCanvas.DefaultDrawingAttributes>
+                    <DrawingAttributes x:Name="attribute" Width="10" Height="10" Color="White"/>
+                </InkCanvas.DefaultDrawingAttributes>
+            </InkCanvas>
+        </Grid>
     </Grid>
 </Window>

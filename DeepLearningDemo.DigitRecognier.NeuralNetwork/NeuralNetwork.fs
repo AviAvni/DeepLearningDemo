@@ -113,3 +113,8 @@ let visualize () =
     |> Seq.toArray
     |> Seq.map (fun (pixels,label, ok) ->
         Visualizer.draw pixels label ok)
+
+let predict pixels =
+    let predicted = Utilities.predictOne modelFile pixels DeviceDescriptor.CPUDevice
+    let label = sprintf "Pred:%i" predicted
+    Visualizer.drawF pixels label true

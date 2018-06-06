@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,11 +32,6 @@ namespace DeepLearningDemo.DigitRecognizer
         {
             InitializeComponent();
             triningStats.Values = values;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
@@ -85,6 +81,43 @@ namespace DeepLearningDemo.DigitRecognizer
             tests.ItemsSource =
                 NeuralNetwork.visualize()
                 .Select(BitmapToImageSource);
+        }
+
+        private void img_StrokeCollected(object sender, InkCanvasStrokeCollectedEventArgs e)
+        {
+            img1.Source =
+                BitmapToImageSource(
+                    NeuralNetwork.predict(
+                        ImageUtil.ParallelExtractCHW(
+                            ImageUtil.Resize(
+                                BitmapFromSource(
+                                    InkCanvasToBitmapSource()), 28, 28, true), true)));
+            img.Strokes.Clear();
+        }
+
+        public static Bitmap BitmapFromSource(BitmapSource bitmapsource)
+        {
+            Bitmap bitmap;
+            using (var outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapsource));
+                enc.Save(outStream);
+                bitmap = new Bitmap(outStream);
+            }
+            return bitmap;
+        }
+
+        private BitmapSource InkCanvasToBitmapSource()
+        {
+            int width = (int)img.ActualWidth ;
+            int height = (int)img.ActualHeight;
+            var size = new System.Windows.Size(img.ActualWidth, img.ActualHeight);
+            img.Measure(size);
+            img.Arrange(new Rect(size));
+            var rtb = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(img);
+            return rtb;
         }
     }
 }
