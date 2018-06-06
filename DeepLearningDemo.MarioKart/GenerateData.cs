@@ -23,7 +23,7 @@ namespace DeepLearningDemo.MarioKart
         {
             return InterceptKeys
                 .CaptureKeys()
-                .Buffer(TimeSpan.FromMilliseconds(200))
+                .Buffer(TimeSpan.FromMilliseconds(100))
                 .Scan(Enumerable.Empty<(VirtualKeyCode, bool)>(), (acc, keys) => acc.Concat(keys).GroupBy(x => x.Item1).Where(x => x.Select(xx => xx.Item2 ? 1 : -1).Sum() > 0).Select(x => ((Key: x.Key, true))))
                 .Select(keys => MergeKeys(keys))
                 .Where(keys => keys.keys.Any())

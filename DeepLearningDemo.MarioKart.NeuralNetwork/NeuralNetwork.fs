@@ -4,13 +4,9 @@ open CNTK.FSharp
 
 open CNTK
 open CNTK.FSharp.Sequential
-open System.IO
-open System.ComponentModel
 open System
 
 let trainingFilePath = "training/training_data_1.txt"
-
-let cntkModel = "training/mario_kart_modelv1"
 
 let numClasses = 5
 
@@ -30,32 +26,17 @@ let minibatchSource = MinibatchSource.TextFormatMinibatchSource(trainingFilePath
 let imageStreamInfo = minibatchSource.StreamInfo(featureStreamName)
 let labelStreamInfo = minibatchSource.StreamInfo(labelsStreamName)
 
-let input = CNTKLib.InputVariable(shape [imageDims], DataType.Float)
-//let labels = CNTKLib.InputVariable(shape [numClasses], DataType.Float)
+let input = CNTKLib.InputVariable(shape imageDim, DataType.Float)
 let labels = CNTKLib.InputVariable(shape [numClasses], DataType.Float, false, labelsStreamName, new AxisVector([| CNTK.Axis.DefaultBatchAxis() |]))
-
-//let conv : Conv2D.Conv2D = 
-//    {    
-//        Kernel = { Width = 10; Height = 10 } 
-//        Filters = 1
-//        Initializer = Custom(CNTKLib.GlorotUniformInitializer(0.26, -1, 2))
-//        Strides = { Horizontal = 1; Vertical = 1 }
-//    }
-
-//let pool : Conv2D.Pool2D = 
-//    {
-//        PoolingType = PoolingType.Max
-//        Window = { Width = 10; Height = 10 }
-//        Strides = { Horizontal = 2; Vertical = 2 }
-//        Padding = true
-//    }
 
 let network : Computation = 
     Layer.scale (float32 (1./255.))
-    |> Layer.add (Recurrent.LSTMSequenceClassifierNet 500 3000 500 500)
+    |> Layer.add (Layer.dense 3200)
+    |> Layer.add (Layer.dense 1600)
+    |> Layer.add (Layer.dense 800)
+    |> Layer.add (Layer.dense 400)
     |> Layer.add (Layer.dense 200)
-    |> Layer.add (Layer.dense 100)
-    |> Layer.add (Layer.dense numClasses)
+    |> Layer.add (Recurrent.LSTMSequenceClassifierNet numClasses 200 800 800)
 
 let spec = {
     Features = input
@@ -66,10 +47,10 @@ let spec = {
     }
 
 let config = {
-    MinibatchSize = 64
-    Epochs = 100
+    MinibatchSize = 128
+    Epochs = 400
     Device = DeviceDescriptor.CPUDevice
-    Schedule = { Rate = 0.000001; MinibatchSize = 1; Type = SGDLearner }
+    Schedule = { Rate = 0.00002; MinibatchSize = 1; Type = MomentumSGDLearner 256. }
     }
 
 

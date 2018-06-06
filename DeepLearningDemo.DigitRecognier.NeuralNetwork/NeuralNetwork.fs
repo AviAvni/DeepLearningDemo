@@ -5,10 +5,7 @@ open CNTK.FSharp
 open CNTK.FSharp.Sequential
  
 open System.IO
-open CNTK.FSharp.Core
 open System
-open CNTK.FSharp.Core
-open System.Threading
 
 // take a look at the data
 
