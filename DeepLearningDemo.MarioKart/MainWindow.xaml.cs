@@ -1,8 +1,10 @@
 ﻿using CNTK;
 using LiveCharts;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace DeepLearningDemo.MarioKart
     {
         private IDisposable subsctiption;
         private ChartValues<double> values = new ChartValues<double>();
+        private List<double> tmpValues = new List<double>();
 
         public MainWindow()
         {
@@ -76,17 +79,18 @@ namespace DeepLearningDemo.MarioKart
 
         private void ReportProgress(TrainingSummary trainingSummary)
         {
-            values.Add(trainingSummary.Evaluation);
-            if(values.Count > 40)
+            tmpValues.Add(trainingSummary.Loss);
+            if (tmpValues.Count == 100)
             {
-                values.RemoveAt(0);
+                values.Add(tmpValues.Average());
+                tmpValues.Clear();
             }
         }
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            PlayGame.LoadModel("LSTM.model", DeviceDescriptor.CPUDevice);
-            await PlayGame.DeepLearningPlay(DeviceDescriptor.CPUDevice);
+            PlayGame.LoadModel("LSTM.model", DeviceDescriptor.GPUDevice(0));
+            await PlayGame.DeepLearningPlay(DeviceDescriptor.GPUDevice(0));
         }
     }
 }

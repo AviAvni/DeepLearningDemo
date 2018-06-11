@@ -1,22 +1,15 @@
 ﻿using LiveCharts;
-using Microsoft.FSharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static CNTK.FSharp.Core.Minibatch;
 
 namespace DeepLearningDemo.DigitRecognizer
@@ -27,6 +20,7 @@ namespace DeepLearningDemo.DigitRecognizer
     public partial class MainWindow : Window
     {
         private ChartValues<double> values = new ChartValues<double>();
+        private List<double> tmpValues = new List<double>();
 
         public MainWindow()
         {
@@ -41,10 +35,11 @@ namespace DeepLearningDemo.DigitRecognizer
 
         private void ReportProgress(TrainingSummary trainingSummary)
         {
-            values.Add(trainingSummary.Evaluation);
-            if (values.Count > 40)
+            tmpValues.Add(trainingSummary.Loss);
+            if (tmpValues.Count == 100)
             {
-                values.RemoveAt(0);
+                values.Add(tmpValues.Average());
+                tmpValues.Clear();
             }
         }
 

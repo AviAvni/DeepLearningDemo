@@ -17,7 +17,7 @@ namespace DeepLearningDemo.MarioKart
 
         public static int ResizeWidth = 100;
         public static int ResizeHeight = 74;
-        public static Rectangle rec = new Rectangle() { X = 200, Y = 300, Width = 600, Height = 400 };
+        public static Rectangle rec = new Rectangle() { X = 200, Y = 250, Width = 600, Height = 400 };
 
         public static IObservable<(Bitmap, Bitmap, IEnumerable<VirtualKeyCode>)> CaptureGameData()
         {

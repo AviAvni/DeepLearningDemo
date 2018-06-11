@@ -38,23 +38,23 @@ let network : Computation =
     |> Layer.add (Layer.dense 200)
     |> Layer.add (Recurrent.LSTMSequenceClassifierNet numClasses 200 800 800)
 
-let spec = {
-    Features = input
-    Labels = labels
-    Model = network
-    Loss = SquaredError
-    Eval = ClassificationError
-    }
-
-let config = {
-    MinibatchSize = 128
-    Epochs = 400
-    Device = DeviceDescriptor.CPUDevice
-    Schedule = { Rate = 0.00002; MinibatchSize = 1; Type = MomentumSGDLearner 256. }
-    }
-
-
 let train (f:Action<Minibatch.TrainingSummary>) =
+    let spec = {
+        Features = input
+        Labels = labels
+        Model = network
+        Loss = SquaredError
+        Eval = ClassificationError
+    }
+
+    let config = {
+        MinibatchSize = 128
+        Epochs = 400
+        Device = DeviceDescriptor.GPUDevice(0)
+        Schedule = { Rate = 0.00002; MinibatchSize = 1 }
+        Optimizer = MomentumSGD 256.
+    }
+
     let trainer = Learner()
     trainer.MinibatchProgress.Add(fun x -> f.Invoke(x))
 

@@ -7,16 +7,11 @@ open CNTK.FSharp.Sequential
 open System.IO
 open System
 
-// take a look at the data
+let device = DeviceDescriptor.GPUDevice(0)
 
 let numClasses = 10
 let input = CNTKLib.InputVariable(shape [ 28; 28; 1 ], DataType.Float)
 let labels = CNTKLib.InputVariable(shape [ numClasses ], DataType.Float)
-
-(*
-    Model is now a sequence of "standard layer"
-    that are composed together into a function
-*)
 
 let conv : Conv2D.Conv2D = 
     {    
@@ -52,47 +47,35 @@ let spec = {
     Eval = ClassificationError
     }
 
-(*
-    Specifying how to learn, and
-    connecting a model to data,
-    is simplified
-*)
-
 let ImageDataFolder = __SOURCE_DIRECTORY__
 let featureStreamName = "features"
 let labelsStreamName = "labels"
 
-// specify how the learning should happen
-// note: can specify what device to learn on
-let config = {
-    MinibatchSize = 64
-    Epochs = 50
-    Device = DeviceDescriptor.CPUDevice
-    Schedule = { Rate = 0.003125; MinibatchSize = 1; Type = SGDLearner }
-    }
-
-let source : TextFormatSource = {
-    FilePath = Path.Combine(ImageDataFolder, "training")
-    Features = featureStreamName
-    Labels = labelsStreamName
-    }
-
-let minibatchSource : MinibatchSource = TextFormat.source (source.Mappings spec)
-
 let modelFile = Path.Combine(__SOURCE_DIRECTORY__,"MNISTConvolution.model")
 
 let train (f:Action<Minibatch.TrainingSummary>) =
+    let config = {
+        MinibatchSize = 64
+        Epochs = 50
+        Device = device
+        Schedule = { Rate = 0.003125; MinibatchSize = 1 }
+        Optimizer = SGD
+    }
+
+    let source : TextFormatSource = {
+        FilePath = Path.Combine(ImageDataFolder, "training")
+        Features = featureStreamName
+        Labels = labelsStreamName
+    }
+
+    let minibatchSource : MinibatchSource = TextFormat.source (source.Mappings spec)
+
     let trainer = Learner()
     trainer.MinibatchProgress.Add(fun x -> f.Invoke(x))
 
     let predictor = trainer.learn minibatchSource (featureStreamName,labelsStreamName) config spec
 
     predictor.Save(modelFile)
-
-(*
-    Using the model we just trained
-    We load model from disk and test it on another set of pictures
-*)
 
 let testingSource = {
     FilePath = Path.Combine(ImageDataFolder, "validation")
@@ -101,11 +84,11 @@ let testingSource = {
     }
 
 let test () =
-    let (total, errors) = Utilities.evaluate modelFile testingSource DeviceDescriptor.CPUDevice
+    let (total, errors) = Utilities.evaluate modelFile testingSource device
     sprintf "Total: %d, Errors: %d" total errors
 
 let visualize () =
-    Utilities.predict modelFile testingSource DeviceDescriptor.CPUDevice
+    Utilities.predict modelFile testingSource device
     |> Seq.map (fun (pixels,expected,predicted) -> 
         pixels,
         sprintf "Real:%i, Pred:%i" expected predicted,
@@ -115,6 +98,6 @@ let visualize () =
         Visualizer.draw pixels label ok)
 
 let predict pixels =
-    let predicted = Utilities.predictOne modelFile pixels DeviceDescriptor.CPUDevice
+    let predicted = Utilities.predictOne modelFile pixels device
     let label = sprintf "Pred:%i" predicted
     Visualizer.drawF pixels label true

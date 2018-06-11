@@ -3,8 +3,6 @@
 open CNTK
 open CNTK.FSharp
 open CNTK.FSharp.Sequential
- 
-open System.IO
 
 let indexOfLargest xs = 
     let largest = xs |> Seq.max
